@@ -57,3 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# MacOS file
+.DS_Store
+
+# webpack config
+.idea
