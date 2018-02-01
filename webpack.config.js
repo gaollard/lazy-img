@@ -7,12 +7,14 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const getLocalIp = () => {
-    let localhost = '';
+    let localhost = 'localhost';
+    let network = os.networkInterfaces();
     try {
-        let network = os.networkInterfaces();
         localhost = network.en0[1].address;
     } catch (e) {
-        localhost = 'localhost';
+        if (network['本地连接']) {
+            localhost = network['本地连接'][1]['address']
+        }
     }
     return localhost;
 }
@@ -56,6 +58,13 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new ExtractTextPlugin("aure.css"),
+         new webpack.optimize.UglifyJsPlugin({
+                compress: {
+                    warnings: false
+                },
+                sourceMap: true,
+                mangle: false
+        }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: './demos/index.html',
@@ -65,6 +74,7 @@ module.exports = {
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),
         inline: true,
-        open: true
+        open: true,
+        host: getLocalIp()
     }
 };
