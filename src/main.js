@@ -1,10 +1,16 @@
-// documentMode is e specific characteristic of IE brower which is totally supported after vision 8
-const isIE = document.documentMode
+import {
+    isIE,
+    extend,
+    bindEvent,
+    isSupportIO,
+    inInterSection
+} from '@/utils/index'
 
 // default config option
 const defaultConfig = {
     rootMargin: '0px',
-    threshold: 0
+    threshold: 0,
+    selector: '.lazy-img'
 }
 
 // make marks for element which has loaded successfully
@@ -50,11 +56,25 @@ const onIntersection = (entries, observer) => {
     })
 }
 
-const lazy = function(selector = '.lazy-img', options = {}) {
-    let params = Object.assign(defaultConfig, options);
-    params.selector = selector;
-    let observer
-    if (window.IntersectionObserver) {
+const handleWindowScroll = (elements) => {
+    console.log('scroll')
+    elements.forEach(element => {
+        console.log(element);
+        if (inInterSection(element)) {
+            console.log(element);
+            if (!isLoaded(element)) {
+                loadImg(element)
+                markAsLoaded(element)
+            }
+        }
+    })
+}
+
+const lazy = function(options = {}) {
+    let observer;
+    let params = extend({}, defaultConfig, options);
+    let elements = getElements(params.selector), len = elements.length;
+    if (isSupportIO) {
         observer = new IntersectionObserver(entries => {
             onIntersection(entries, observer)
         })
@@ -65,20 +85,23 @@ const lazy = function(selector = '.lazy-img', options = {}) {
     return {
         // 开始观测
         observe() {
-            let elements = getElements(params.selector),
-                len = elements.length;
-            for (let i = 0; i < len; i++) {
-                if (isLoaded(elements[i])) {
-                    continue
-                }
-                if (observer) {
-                    observer.observe(elements[i]);
-                    continue
-                }
-                // 不支持时直接去加载吧
-                load(elements[i]);
-                markAsLoaded(elements[i]);
-            }
+            // if (isSupportIO) {
+            //     for (let i = 0; i < len; i++) {
+            //         if (isLoaded(elements[i])) {
+            //             continue
+            //         }
+            //         if (observer) {
+            //             observer.observe(elements[i]);
+            //             continue
+            //         }
+            //         // 不支持时直接去加载吧
+            //         load(elements[i]);
+            //         markAsLoaded(elements[i]);
+            //     }
+            // }
+            bindEvent(window, 'scroll', () => {
+                handleWindowScroll(elements);
+            })
         },
         // 直接触发
         triggerLoad(element) {
@@ -91,5 +114,5 @@ const lazy = function(selector = '.lazy-img', options = {}) {
     }
 }
 
-window.observer = lazy('.lazy-img');
+window.observer = lazy();
 observer.observe();
