@@ -58,6 +58,13 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new ExtractTextPlugin("aure.css"),
+         new webpack.optimize.UglifyJsPlugin({
+                compress: {
+                    warnings: false
+                },
+                sourceMap: true,
+                mangle: false
+        }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: './demos/index.html',
