@@ -47,18 +47,16 @@ export function bindEvent(element, type, handle) {
 
 // 是否在可视区域内
 export function inInterSection(element) {
-
-    console.log(window);
-
     let offsetWidth = element.offsetWidth;
     let offsetHeight = element.offsetHeight;
 
     let offsetTop = element.offsetTop;
     let offsetLeft = element.offsetLeft;
 
-    let scrollLeft = document.body.scrollLeft;
-    let scrollTop = document.body.scrollTop;
+    let scrollLeft = window.scrollX;
+    let scrollTop = window.scrollY;
 
-    console.log(scrollTop, offsetHeight, offsetTop);
-    return ((offsetTop < offsetHeight + offsetTop) && (offsetLeft < offsetWidth + scrollLeft))
+    let winWidth = window.innerWidth;
+    let winHeight = window.innerHeight;
+    return ((offsetTop <= winHeight + scrollTop) && (offsetLeft <= winWidth + scrollLeft))
 }

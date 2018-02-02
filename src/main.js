@@ -57,11 +57,8 @@ const onIntersection = (entries, observer) => {
 }
 
 const handleWindowScroll = (elements) => {
-    console.log('scroll')
     elements.forEach(element => {
-        console.log(element);
         if (inInterSection(element)) {
-            console.log(element);
             if (!isLoaded(element)) {
                 loadImg(element)
                 markAsLoaded(element)
