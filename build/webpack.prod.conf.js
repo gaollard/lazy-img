@@ -1,4 +1,3 @@
-const os = require('os');
 var path = require('path');
 var webpack = require('webpack');
 var webpackDevServer = require('webpack-dev-server');
@@ -6,25 +5,14 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-const getLocalIp = () => {
-    let localhost = 'localhost';
-    let network = os.networkInterfaces();
-    try {
-        localhost = network.en0[1].address;
-    } catch (e) {
-        if (network['本地连接']) {
-            localhost = network['本地连接'][1]['address']
-        }
-    }
-    return localhost;
-}
+var utils = require('./utils');
 
 module.exports = {
     entry: {
-        main: './src/main.js'
+        main: path.resolve(__dirname, '../src/main.js'),
     },
     output: {
-        path: path.resolve(__dirname, 'dist/js'),
+        path: path.resolve(__dirname, '../dist/js'),
         filename: 'aure.js'
     },
     module: {
@@ -52,7 +40,7 @@ module.exports = {
     },
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, 'src')
+            '@': path.resolve(__dirname, '../src')
         }
     },
     plugins: [
@@ -67,14 +55,14 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: './demos/index.html',
+            template: path.resolve(__dirname, '../demos/index.html'),
             inject: true
         })
     ],
     devServer: {
-        contentBase: path.resolve(__dirname, 'dist'),
+        contentBase: path.resolve(__dirname, '../dist'),
         inline: true,
         open: true,
-        host: getLocalIp()
+        host: utils.getLocalIp()
     }
 };

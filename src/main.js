@@ -13,6 +13,7 @@ import {
 
 // default config option
 const defaultConfig = {
+  delay: 200,
   rootMargin: '0px',
   threshold: 0,
   selector: '.lazy-img'
@@ -72,13 +73,10 @@ const handleWindowScroll = (elements) => {
   })
 }
 
-const lazy = function(options = {}) {
+export default function (options = {}) {
   let observer
   let params = extend({}, defaultConfig, options)
   let elements = getElements(params.selector), len = elements.length
-  /**
-   * 对外暴露两个方法
-   */
   return {
     observe() {
       console.log(isSupportIO ? '支持IntersectionObserver' : '不支持IntersectionObserver');
@@ -100,7 +98,7 @@ const lazy = function(options = {}) {
       handleWindowScroll(elements)
       bindEvent(window, 'scroll', throttle(function() {
         handleWindowScroll(elements)
-      }, 200));
+      }, params.delay));
     },
     triggerLoad(element) {
       if (isLoaded(element)) {
@@ -111,6 +109,3 @@ const lazy = function(options = {}) {
     }
   }
 }
-
-window.observer = lazy();
-observer.observe();
