@@ -12,4 +12,18 @@ npm run start
 # build release
 npm run build
 ```
+## example
 
+```js
+
+import lazyImg from 'mi-lazy-img'
+let observer = lazyimg({
+	delay: 200, // 当不支持 IntersectionObserver时，节流函数延迟时间(ms)
+	rootMargin: '0px',
+	threshold: 0,
+	selector: '.lazy-img' // 元素的选择器
+})
+
+observer.observe();
+
+```
