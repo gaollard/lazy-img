@@ -15,6 +15,7 @@
         "file-loader": "^1.1.5",
         "html-webpack-plugin": "^2.30.1",
         "node-sass": "^4.7.2",
+        "opn": "^5.2.0",
         "postcss": "^6.0.14",
         "postcss-loader": "^2.0.9",
         "px2rem-loader": "^0.1.7",
@@ -26,7 +27,7 @@
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "webpack-dev-server",
+        "server": "node build/server.js",
         "dev": "webpack-dev-server --config build/webpack.dev.conf.js",
         "build": "webpack --config build/webpack.prod.conf.js"
     },
